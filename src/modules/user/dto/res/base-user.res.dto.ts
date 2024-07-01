@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CarEntity } from '../../../../database/entities/car.entity';
 
 export class BaseUserResDto {
   @ApiProperty({
@@ -30,11 +29,5 @@ export class BaseUserResDto {
     example: 'base/premium',
     description: 'The account type of the User ',
   })
-  public readonly account: string;
-
-  @ApiProperty({
-    example: 'car',
-    description: 'All cars of the User ',
-  })
-  public readonly cars: CarEntity[];
+  public readonly isPremium: boolean;
 }

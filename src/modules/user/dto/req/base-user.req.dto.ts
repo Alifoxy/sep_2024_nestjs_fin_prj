@@ -27,4 +27,8 @@ export class BaseUserReqDto {
   @Length(0, 300)
   @Matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%_*#?&])[A-Za-z\d@$_!%*#?&]{8,}$/)
   password: string;
+
+  @ApiProperty({ example: 'base/premium' })
+  @IsString()
+  account: string;
 }
