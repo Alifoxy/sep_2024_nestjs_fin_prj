@@ -28,7 +28,7 @@ export class CarRepository extends Repository<CarEntity> {
       qb.setParameter('search', `%${query.search}%`);
     }
 
-    qb.orderBy('article.created', 'DESC');
+    qb.orderBy('car.price', 'DESC');
     qb.take(query.limit);
     qb.skip(query.offset);
 
@@ -38,18 +38,13 @@ export class CarRepository extends Repository<CarEntity> {
   public async findArticleById(
     userData: IUserData,
     articleId: string,
-  ): Promise<ArticleEntity> {
-    const qb = this.createQueryBuilder('article');
-    qb.leftJoinAndSelect('article.likes', 'like', 'like.user_id = :myId');
-    qb.leftJoinAndSelect('article.tags', 'tag');
-    qb.leftJoinAndSelect('article.user', 'user');
-    qb.leftJoinAndSelect(
-      'user.followings',
-      'follow',
-      'follow.follower_id = :myId',
-    );
+  ): Promise<CarEntity> {
+    const qb = this.createQueryBuilder('car');
+    qb.leftJoinAndSelect('car.statistic', 'statistic');
+    qb.leftJoinAndSelect('car.user', 'user');
+    qb.leftJoinAndSelect('user.cars', 'car', 'car.user_id = :myId');
 
-    qb.where('article.id = :articleId');
+    qb.where('car.id = :carId');
     qb.setParameter('articleId', articleId);
     qb.setParameter('myId', userData.userId);
 
