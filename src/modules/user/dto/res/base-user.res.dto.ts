@@ -29,5 +29,5 @@ export class BaseUserResDto {
     example: 'base/premium',
     description: 'The account type of the User ',
   })
-  public readonly isPremium: boolean;
+  public readonly account: string;
 }
