@@ -7,7 +7,7 @@ import { BaseModel } from './models/base.model';
 @Entity({ name: TableNameEnum.STATISTICS })
 export class StatisticEntity extends BaseModel {
   @Column('text')
-  views: string;
+  views: number;
 
   @Column('text')
   mid_price_by_region: string;

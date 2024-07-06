@@ -52,46 +52,7 @@ export class UserService {
 
   public async remove(userId: string): Promise<void> {}
 
-  public async follow(userData: IUserData, userId: string): Promise<void> {
-    if (userData.userId === userId) {
-      throw new ConflictException('You cannot follow yourself');
-    }
-    const user = await this.userRepository.findOneBy({ id: userId });
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-    const follow = await this.followRepository.findOneBy({
-      follower_id: userData.userId,
-      following_id: userId,
-    });
-    if (follow) {
-      throw new ConflictException('You are already following this user');
-    }
-    await this.followRepository.save(
-      this.followRepository.create({
-        follower_id: userData.userId,
-        following_id: userId,
-      }),
-    );
-  }
 
-  public async unfollow(userData: IUserData, userId: string): Promise<void> {
-    if (userData.userId === userId) {
-      throw new ConflictException('You cannot follow yourself');
-    }
-    const user = await this.userRepository.findOneBy({ id: userId });
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-    const follow = await this.followRepository.findOneBy({
-      follower_id: userData.userId,
-      following_id: userId,
-    });
-    if (!follow) {
-      throw new ConflictException('You cant unfollow this user');
-    }
-    await this.followRepository.remove(follow);
-  }
 
   public async isEmailUniqueOrThrow(email: string): Promise<void> {
     const user = await this.userRepository.findOneBy({ email });
