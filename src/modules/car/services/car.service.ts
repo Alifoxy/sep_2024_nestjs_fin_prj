@@ -18,11 +18,12 @@ import { ArticleListReqDto } from '../dto/req/article-list.req.dto';
 import { CreateArticleReqDto } from '../dto/req/create-article.req.dto';
 import { UpdateArticleReqDto } from '../dto/req/update-article.req.dto';
 import { ArticleResDto } from '../dto/res/article.res.dto';
-import { ArticleListResDto } from '../dto/res/article-list.res.dto';
-import { ArticleMapper } from './article.mapper';
+import { CarListResDto } from '../dto/res/car-list.res.dto';
+import { CarMapper } from './car.mapper';
+import { CarListReqDto } from '../dto/req/car-list.req.dto';
 
 @Injectable()
-export class ArticleService {
+export class CarService {
   constructor(
     private readonly logger: LoggerService,
     private readonly userRepository: UserRepository,
@@ -33,8 +34,8 @@ export class ArticleService {
 
   public async getList(
     userData: IUserData,
-    query: ArticleListReqDto,
-  ): Promise<ArticleListResDto> {
+    query: CarListReqDto,
+  ): Promise<CarListResDto> {
     const [entities, total] = await this.carRepository.getList(
       userData,
       query,

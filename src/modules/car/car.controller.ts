@@ -32,7 +32,7 @@ import { CarService } from './services/article.service';
 @ApiBearerAuth()
 @ApiTags('Articles')
 @Controller('articles')
-export class ArticleController {
+export class CarController {
   constructor(private readonly articleService: ArticleService) {}
 
   @ApiForbiddenResponse({ description: 'Forbidden' })

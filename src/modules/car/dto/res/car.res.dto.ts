@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { UserResDto } from '../../../user/dto/res/user.res.dto';
+import {StatisticEntity} from "../../../../database/entities/statistic.entity";
 
 export class CarResDto {
   @ApiProperty({
@@ -22,34 +23,28 @@ export class CarResDto {
   model: string;
 
   @ApiProperty({
-    example: 'Article Body',
-    description: 'Article Body',
+    example: '1997',
+    description: 'Car Year',
   })
-  body: string;
+  year: string;
 
   @ApiProperty({
-    example: '2021-09-29T10:00:00.000Z',
-    description: 'Article Created Date',
+    example: '100000',
+    description: 'Price of the Car',
   })
-  created: Date;
+  price: number;
 
   @ApiProperty({
-    example: '2021-09-29T10:00:00.000Z',
-    description: 'Article Updated Date',
+    example: 'Lviv',
+    description: 'Car sell region',
   })
-  updated: Date;
+  region: string;
 
   @ApiProperty({
     example: ['tag1', 'tag2'],
     description: 'Article Tags',
   })
-  tags: string[];
-
-  @ApiProperty({
-    example: true,
-    description: 'Is Article Liked',
-  })
-  isLiked: boolean;
+  statistic: StatisticEntity;
 
   user?: UserResDto;
 }
