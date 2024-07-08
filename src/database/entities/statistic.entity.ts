@@ -10,10 +10,10 @@ export class StatisticEntity extends BaseModel {
   views: number;
 
   @Column('text')
-  mid_price_by_region: string;
+  mid_price_by_region: number;
 
   @Column('text')
-  mid_price_by_Ukraine: string;
+  mid_price_by_Ukraine: number;
 
   @Column()
   car_id: string;

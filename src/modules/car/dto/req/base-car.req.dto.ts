@@ -17,17 +17,16 @@ export class BaseCarReqDto {
   model: string;
 
   @IsString()
-  @Length(0, 3000)
+  @Min(1950)
+  @Max(2023)
   @Transform(TransformHelper.trim)
   @Type(() => String)
   year: string;
 
   @IsString()
-  @Min(1950)
-  @Max(2023)
   @Transform(TransformHelper.trim)
   @Type(() => String)
-  price: string;
+  price: number;
 
   @IsString()
   @Length(0, 3000)
@@ -38,4 +37,6 @@ export class BaseCarReqDto {
   @Transform(TransformHelper.trim)
   @Type(() => String)
   region: string;
+
+  statistic: StatisticReqDto;
 }

@@ -60,7 +60,7 @@ export class CarService {
 
     const entities = await this.Repository.findBy({ name: In(tags) });
     const existingTags = new Set(entities.map((tag) => tag.name));
-    const newTags = tags.filter((tag) => !existingTags.has(tag));
+    const newTags = statistics.filter((tag) => !existingTags.has(tag));
 
     const newEntities = await this.tagRepository.save(
       newTags.map((name) => this.tagRepository.create({ name })),
@@ -68,100 +68,65 @@ export class CarService {
     return [...entities, ...newEntities];
   }
 
-  public async getById(
-    userData: IUserData,
-    articleId: string,
-  ): Promise<ArticleResDto> {
-    const article = await this.articleRepository.findArticleById(
-      userData,
-      articleId,
-    );
-    if (!article) {
-      throw new NotFoundException('Article not found');
+  public async getById(userData: IUserData, carId: string): Promise<CarResDto> {
+    const car = await this.carRepository.findCarById(userData, carId);
+    if (!car) {
+      throw new NotFoundException('Car not found');
     }
-    return ArticleMapper.toResponseDTO(article);
+    return CarMapper.toResponseDTO(car);
   }
 
   public async updateById(
     userData: IUserData,
-    articleId: string,
-    dto: UpdateArticleReqDto,
-  ): Promise<ArticleResDto> {
-    const article = await this.findMyArticleByIdOrThrow(
+    carId: string,
+    dto: UpdateCarReqDto,
+  ): Promise<CarResDto> {
+    const car = await this.findMyCarByIdOrThrow(
       userData.userId,
-      articleId,
+      carId,
     );
-    await this.articleRepository.save({ ...article, ...dto });
-    const updatedArticle = await this.articleRepository.findArticleById(
+    await this.carRepository.save({ ...car, ...dto });
+    const updatedCar = await this.carRepository.findCarById(
       userData,
-      articleId,
+      carId,
     );
-    return ArticleMapper.toResponseDTO(updatedArticle);
+    return CarMapper.toResponseDTO(updatedCar);
   }
 
   public async deleteById(
     userData: IUserData,
-    articleId: string,
+    carId: string,
   ): Promise<void> {
-    const article = await this.findMyArticleByIdOrThrow(
+    const car = await this.findMyCarByIdOrThrow(
       userData.userId,
-      articleId,
+      carId,
     );
-    await this.articleRepository.remove(article);
+    await this.carRepository.remove(car);
   }
 
-  public async findMyArticleByIdOrThrow(
+  public async findMyCarByIdOrThrow(
     userId: string,
-    articleId: string,
-  ): Promise<ArticleEntity> {
-    const article = await this.articleRepository.findOneBy({
-      id: articleId,
+    carId: string,
+  ): Promise<CarEntity> {
+    const car = await this.carRepository.findOneBy({
+      id: carId,
     });
-    if (!article) {
-      throw new NotFoundException('Article not found');
+    if (!car) {
+      throw new NotFoundException('Car not found');
     }
-    if (article.user_id !== userId) {
+    if (car.user_id !== userId) {
       throw new ForbiddenException();
     }
-    return article;
-  }
-
-  public async like(userData: IUserData, articleId: string): Promise<void> {
-    await this.findArticleByIdOrThrow(articleId);
-    const like = await this.likeRepository.findOneBy({
-      article_id: articleId,
-      user_id: userData.userId,
-    });
-    if (like) {
-      throw new ConflictException('Already liked');
-    }
-    await this.likeRepository.save(
-      this.likeRepository.create({
-        article_id: articleId,
-        user_id: userData.userId,
-      }),
-    );
-  }
-
-  public async unlike(userData: IUserData, articleId: string): Promise<void> {
-    await this.findArticleByIdOrThrow(articleId);
-    const like = await this.likeRepository.findOneBy({
-      article_id: articleId,
-      user_id: userData.userId,
-    });
-    if (!like) {
-      throw new ConflictException('Not liked yet');
-    }
-    await this.likeRepository.remove(like);
+    return car;
   }
 
   private async findArticleByIdOrThrow(
-    articleId: string,
-  ): Promise<ArticleEntity> {
-    const article = await this.articleRepository.findOneBy({ id: articleId });
-    if (!article) {
-      throw new NotFoundException('Article not found');
+    carId: string,
+  ): Promise<CarEntity> {
+    const car = await this.carRepository.findOneBy({ id: carId });
+    if (!car) {
+      throw new NotFoundException('Car not found');
     }
-    return article;
+    return car;
   }
 }
