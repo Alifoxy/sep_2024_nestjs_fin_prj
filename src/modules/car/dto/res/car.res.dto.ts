@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { UserResDto } from '../../../user/dto/res/user.res.dto';
+import { StatisticResDto } from "../../../statistic/dto/res/statistic.res.dto";
 
 export class CarResDto {
   @ApiProperty({

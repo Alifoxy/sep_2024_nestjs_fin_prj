@@ -44,7 +44,7 @@ export class CarService {
     userData: IUserData,
     dto: CreateCarReqDto,
   ): Promise<CarResDto> {
-    const statistic = await this.createStatistic(dto.statistic);
+    const statistic = await this.createStatistic();
     const car = await this.carRepository.save(
       this.carRepository.create({
         ...dto,
@@ -55,10 +55,10 @@ export class CarService {
     return CarMapper.toResponseDTO(car);
   }
 
-  private async createStatistic(statistic: string): Promise<StatisticEntity> {
+  private async createStatistic(): Promise<StatisticEntity> {
     if (!tags || tags.length === 0) return [];
 
-    const entities = await this.Repository.findBy({ name: In(tags) });
+    const entities = await this.Repository.findBy({ name: In(statistic) });
     const existingTags = new Set(entities.map((tag) => tag.name));
     const newTags = statistics.filter((tag) => !existingTags.has(tag));
 

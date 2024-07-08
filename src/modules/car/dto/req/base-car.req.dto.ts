@@ -2,6 +2,7 @@ import { Transform, Type } from 'class-transformer';
 import { IsString, Length, Max, Min} from 'class-validator';
 
 import { TransformHelper } from '../../../../common/helpers/transform.helper';
+import { StatisticResDto } from "../../../statistic/dto/res/statistic.res.dto";
 
 export class BaseCarReqDto {
   @IsString()
@@ -38,5 +39,5 @@ export class BaseCarReqDto {
   @Type(() => String)
   region: string;
 
-  statistic: StatisticReqDto;
+  statistic: StatisticResDto;
 }

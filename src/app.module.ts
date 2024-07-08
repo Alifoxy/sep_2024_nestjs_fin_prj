@@ -4,14 +4,15 @@ import { APP_FILTER } from '@nestjs/core';
 
 import { GlobalExceptionFilter } from './common/http/global-exception.filter';
 import configuration from './configs/configs';
-import { ArticleModule } from './modules/article/article.module';
+import { CarModule } from './modules/car/car.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { FileStorageModule } from './modules/file-storage/file-storage.module';
+
 import { LoggerModule } from './modules/logger/logger.module';
-import { PostgresModule } from './modules/postgres/postgres.module';
+import { MysqlModule } from './modules/mysql/mysql.module';
 import { RedisModule } from './modules/redis/redis.module';
 import { RepositoryModule } from './modules/repository/repository.module';
-import { TagModule } from './modules/tag/tag.module';
+import { StatisticModule } from './modules/statistic/statistic.module';
 import { UsersModule } from './modules/user/user.module';
 
 @Module({
@@ -22,12 +23,12 @@ import { UsersModule } from './modules/user/user.module';
     }),
     RepositoryModule,
     LoggerModule,
-    PostgresModule,
+    MysqlModule,
     RedisModule,
     AuthModule,
     UsersModule,
     CarModule,
-    TagModule,
+    StatisticModule,
     FileStorageModule,
   ],
   controllers: [],
