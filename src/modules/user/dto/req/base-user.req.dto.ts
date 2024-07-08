@@ -22,6 +22,11 @@ export class BaseUserReqDto {
   @Length(0, 300)
   bio?: string;
 
+  @IsOptional()
+  @IsString()
+  @Length(0, 3000)
+  image?: string;
+
   @ApiProperty({ example: '123qwe!@#QWE' })
   @IsString()
   @Length(0, 300)

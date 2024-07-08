@@ -6,28 +6,25 @@ import {
 } from '@nestjs/common';
 import { In } from 'typeorm';
 
-import { ArticleEntity } from '../../../database/entities/article.entity';
-import { TagEntity } from '../../../database/entities/tag.entity';
+import { CarEntity } from '../../../database/entities/car.entity';
+import { StatisticEntity } from '../../../database/entities/statistic.entity';
 import { IUserData } from '../../auth/interfaces/user-data.interface';
 import { LoggerService } from '../../logger/logger.service';
 import { CarRepository } from '../../repository/services/car.repository';
-import { LikeRepository } from '../../repository/services/like.repository';
 import { StatisticRepository } from '../../repository/services/statistic.repository';
 import { UserRepository } from '../../repository/services/user.repository';
-import { ArticleListReqDto } from '../dto/req/article-list.req.dto';
-import { CreateArticleReqDto } from '../dto/req/create-article.req.dto';
-import { UpdateArticleReqDto } from '../dto/req/update-article.req.dto';
-import { ArticleResDto } from '../dto/res/article.res.dto';
+import { UpdateCarReqDto } from '../dto/req/update-car.req.dto';
 import { CarListResDto } from '../dto/res/car-list.res.dto';
 import { CarMapper } from './car.mapper';
 import { CarListReqDto } from '../dto/req/car-list.req.dto';
+import { CarResDto } from '../dto/res/car.res.dto';
+import { CreateCarReqDto } from '../dto/req/create-car.req.dto';
 
 @Injectable()
 export class CarService {
   constructor(
     private readonly logger: LoggerService,
     private readonly userRepository: UserRepository,
-    private readonly likeRepository: LikeRepository,
     private readonly carRepository: CarRepository,
     private readonly statisticRepository: StatisticRepository,
   ) {}
@@ -40,28 +37,28 @@ export class CarService {
       userData,
       query,
     );
-    return ArticleMapper.toListResponseDTO(entities, total, query);
+    return CarMapper.toListResponseDTO(entities, total, query);
   }
 
   public async create(
     userData: IUserData,
-    dto: CreateArticleReqDto,
-  ): Promise<ArticleResDto> {
-    const tags = await this.createTags(dto.tags);
-    const article = await this.carRepository.save(
+    dto: CreateCarReqDto,
+  ): Promise<CarResDto> {
+    const statistic = await this.createStatistic(dto.statistic);
+    const car = await this.carRepository.save(
       this.carRepository.create({
         ...dto,
         user_id: userData.userId,
-        tags,
+        statistic,
       }),
     );
-    return ArticleMapper.toResponseDTO(article);
+    return CarMapper.toResponseDTO(car);
   }
 
-  private async createTags(tags: string[]): Promise<TagEntity[]> {
+  private async createStatistic(statistic: string): Promise<StatisticEntity> {
     if (!tags || tags.length === 0) return [];
 
-    const entities = await this.tagRepository.findBy({ name: In(tags) });
+    const entities = await this.Repository.findBy({ name: In(tags) });
     const existingTags = new Set(entities.map((tag) => tag.name));
     const newTags = tags.filter((tag) => !existingTags.has(tag));
 

@@ -8,7 +8,6 @@ import { IUserData } from '../../auth/interfaces/user-data.interface';
 import { ContentType } from '../../file-storage/models/enums/content-type.enum';
 import { FileStorageService } from '../../file-storage/services/file-storage.service';
 import { LoggerService } from '../../logger/logger.service';
-import { FollowRepository } from '../../repository/services/follow.repository';
 import { UserRepository } from '../../repository/services/user.repository';
 import { UpdateUserReqDto } from '../dto/req/update-user.req.dto';
 import { UserResDto } from '../dto/res/user.res.dto';
@@ -20,7 +19,6 @@ export class UserService {
   constructor(
     private readonly logger: LoggerService,
     private readonly userRepository: UserRepository,
-    private readonly followRepository: FollowRepository,
     private readonly fileStorageService: FileStorageService,
   ) {}
 
@@ -51,8 +49,6 @@ export class UserService {
   }
 
   public async remove(userId: string): Promise<void> {}
-
-
 
   public async isEmailUniqueOrThrow(email: string): Promise<void> {
     const user = await this.userRepository.findOneBy({ email });

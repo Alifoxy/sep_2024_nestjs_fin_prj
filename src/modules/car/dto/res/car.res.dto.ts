@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { UserResDto } from '../../../user/dto/res/user.res.dto';
-import {StatisticEntity} from "../../../../database/entities/statistic.entity";
 
 export class CarResDto {
   @ApiProperty({
@@ -35,16 +34,18 @@ export class CarResDto {
   price: number;
 
   @ApiProperty({
+    example: 'https://www.example.com/car.jpg',
+    description: 'The photo of the Car',
+  })
+  public readonly image?: string;
+
+  @ApiProperty({
     example: 'Lviv',
     description: 'Car sell region',
   })
   region: string;
 
-  @ApiProperty({
-    example: ['tag1', 'tag2'],
-    description: 'Article Tags',
-  })
-  statistic: StatisticEntity;
+  statistic: StatisticResDto;
 
   user?: UserResDto;
 }

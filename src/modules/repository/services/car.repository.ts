@@ -35,9 +35,9 @@ export class CarRepository extends Repository<CarEntity> {
     return await qb.getManyAndCount();
   }
 
-  public async findArticleById(
+  public async findCarById(
     userData: IUserData,
-    articleId: string,
+    carId: string,
   ): Promise<CarEntity> {
     const qb = this.createQueryBuilder('car');
     qb.leftJoinAndSelect('car.statistic', 'statistic');
@@ -45,7 +45,7 @@ export class CarRepository extends Repository<CarEntity> {
     qb.leftJoinAndSelect('user.cars', 'car', 'car.user_id = :myId');
 
     qb.where('car.id = :carId');
-    qb.setParameter('articleId', articleId);
+    qb.setParameter('carId', carId);
     qb.setParameter('myId', userData.userId);
 
     return await qb.getOne();

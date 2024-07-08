@@ -27,6 +27,8 @@
     "@nestjs/swagger": "^7.3.1",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "*",
+    "@sentry/node": "^8.15.0",
+    "@sentry/profiling-node": "^8.15.0",
     "dotenv": "^16.4.5",
     "@nestjs/typeorm": "^10.0.2",
     "class-transformer": "^0.5.1",
