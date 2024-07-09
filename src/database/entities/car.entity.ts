@@ -17,7 +17,7 @@ export class CarEntity extends BaseModel {
   year: string;
 
   @Column('text')
-  price: string;
+  price: number;
 
   @Column('text')
   region: string;

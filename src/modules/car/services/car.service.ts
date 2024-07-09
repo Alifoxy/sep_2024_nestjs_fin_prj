@@ -33,10 +33,7 @@ export class CarService {
     userData: IUserData,
     query: CarListReqDto,
   ): Promise<CarListResDto> {
-    const [entities, total] = await this.carRepository.getList(
-      userData,
-      query,
-    );
+    const [entities, total] = await this.carRepository.getList(userData, query);
     return CarMapper.toListResponseDTO(entities, total, query);
   }
 
@@ -44,7 +41,7 @@ export class CarService {
     userData: IUserData,
     dto: CreateCarReqDto,
   ): Promise<CarResDto> {
-    const statistic = await this.createStatistic();
+    const statistic = await this.createStatistic(dto.statistic);
     const car = await this.carRepository.save(
       this.carRepository.create({
         ...dto,
@@ -55,17 +52,12 @@ export class CarService {
     return CarMapper.toResponseDTO(car);
   }
 
-  private async createStatistic(): Promise<StatisticEntity> {
-    if (!tags || tags.length === 0) return [];
+  private async createStatistic(
+    statistic: StatisticEntity,
+  ): Promise<any> {
 
-    const entities = await this.Repository.findBy({ name: In(statistic) });
-    const existingTags = new Set(entities.map((tag) => tag.name));
-    const newTags = statistics.filter((tag) => !existingTags.has(tag));
-
-    const newEntities = await this.tagRepository.save(
-      newTags.map((name) => this.tagRepository.create({ name })),
-    );
-    return [...entities, ...newEntities];
+    const entity = this.statisticRepository.create(statistic);
+    return [entity];
   }
 
   public async getById(userData: IUserData, carId: string): Promise<CarResDto> {
@@ -81,26 +73,14 @@ export class CarService {
     carId: string,
     dto: UpdateCarReqDto,
   ): Promise<CarResDto> {
-    const car = await this.findMyCarByIdOrThrow(
-      userData.userId,
-      carId,
-    );
+    const car = await this.findMyCarByIdOrThrow(userData.userId, carId);
     await this.carRepository.save({ ...car, ...dto });
-    const updatedCar = await this.carRepository.findCarById(
-      userData,
-      carId,
-    );
+    const updatedCar = await this.carRepository.findCarById(userData, carId);
     return CarMapper.toResponseDTO(updatedCar);
   }
 
-  public async deleteById(
-    userData: IUserData,
-    carId: string,
-  ): Promise<void> {
-    const car = await this.findMyCarByIdOrThrow(
-      userData.userId,
-      carId,
-    );
+  public async deleteById(userData: IUserData, carId: string): Promise<void> {
+    const car = await this.findMyCarByIdOrThrow(userData.userId, carId);
     await this.carRepository.remove(car);
   }
 
@@ -120,9 +100,7 @@ export class CarService {
     return car;
   }
 
-  private async findArticleByIdOrThrow(
-    carId: string,
-  ): Promise<CarEntity> {
+  private async findCarByIdOrThrow(carId: string): Promise<CarEntity> {
     const car = await this.carRepository.findOneBy({ id: carId });
     if (!car) {
       throw new NotFoundException('Car not found');

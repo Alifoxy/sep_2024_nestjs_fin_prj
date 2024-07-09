@@ -13,4 +13,10 @@ export class StatisticResDto {
   @IsString()
   @Type(() => String)
   mid_price_by_Ukraine: number;
+
+  @IsString()
+  @Type(() => String)
+  car_id: number;
+
+
 }
